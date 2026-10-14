@@ -90,6 +90,53 @@ Invoke-RestMethod -Uri "http://127.0.0.1:8000/generate" `
 - 访问不存在的路径：HTTP 404，`error_code=NOT_FOUND`。
 - 未处理的服务器异常：HTTP 500，`error_code=INTERNAL_SERVER_ERROR`；异常详情只写日志，不返回客户端。
 
+## RAG 文档加载、清洗与切分
+
+`rag/documents.py` 负责把知识目录中的 Markdown 读取为文档对象，并继续生成可检索片段：
+
+```python
+from pathlib import Path
+
+from rag.documents import load_markdown_documents, split_document_into_chunks
+
+documents = load_markdown_documents(Path("data/synthetic_demo/knowledge"))
+chunks = [
+    chunk
+    for document in documents
+    for chunk in split_document_into_chunks(document)
+]
+```
+
+当前流程：
+
+```text
+Markdown 文件
+→ KnowledgeDocument
+→ 清洗固定声明和多余空行
+→ KnowledgeChunk
+```
+
+每份文档包含：
+
+```text
+doc_id      稳定文档编号
+title       Markdown 一级标题
+content     原始 Markdown 内容
+source_path 来源文件路径
+```
+
+每个片段包含：
+
+```text
+chunk_id    片段编号，例如 sop_dispensing#0
+doc_id      所属文档编号
+title       所属文档标题
+content     清洗并切分后的正文
+source_path 来源文件路径
+```
+
+当前已实现文档加载、清洗和按子标题切分。下一阶段实现 embedding 和本地向量检索。
+
 ## 运行测试
 
 > 不要直接执行 `python tests/test_generator.py`。测试文件应交给 pytest 运行，否则 Python 会把 `tests` 目录作为模块搜索起点，导致找不到 `quality_data`。
@@ -121,3 +168,4 @@ python -m pytest -q
 - 不截图公司系统。
 - 不上传真实参数、客户名称和良率。
 - 真实内网适配器以后单独实现，不进入公开仓库。
+
