@@ -123,7 +123,7 @@ PYTHON-FOUNDATION
 - 或者在终端显式执行：
 
 ```powershell
-& ".\.venv\Scripts\python.exe" .\exercises\01_io.py
+& ".\.venv\Scripts\python.exe" .\exercises\files_and_exceptions\01_io.py
 ```
 
 ---
@@ -254,7 +254,7 @@ E:\Project\0基础学agent\实战项目\python-foundation\.venv\Scripts\python.e
 1. 在资源管理器中新建文件，例如：
 
 ```text
-exercises/01_io.py
+exercises/files_and_exceptions/01_io.py
 ```
 
 2. 输入或敲入代码。
@@ -442,7 +442,7 @@ feat: practice file io
 1. 打开 `python-foundation` 工作区。
 2. 确认终端在项目根目录。
 3. 确认解释器来自 `.venv`。
-4. 新建 `exercises/01_io.py`。
+4. 新建 `exercises/files_and_exceptions/01_io.py`。
 5. 先照敲最小例子并运行。
 6. 故意改错一次，阅读 traceback。
 7. 关掉示例，自己重写一遍。
